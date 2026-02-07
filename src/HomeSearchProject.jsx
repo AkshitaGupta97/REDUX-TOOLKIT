@@ -1,19 +1,9 @@
-import { fetchPhotos, fetchVideos } from "./api/mediaApi"
+import { SearchBar } from "./components/SearchBar"
 
 const HomeSearchProject = () => {
-  const getPhotos = (text) => {
-     fetchPhotos(text)
-  }
-  const getVideos = (query) => {
-     fetchVideos(query)
-  }
   return (
     <div>
-      <button onClick={() => getPhotos('cat')}>Get Photos</button>
-
-      <button
-       onClick={() => getPhotos('cat')}>Get Videos
-      </button>
+      <SearchBar />
     </div>
   )
 }
