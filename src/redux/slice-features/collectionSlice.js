@@ -28,9 +28,12 @@ const collectionSlice = createSlice({
         },
         addedToast: (state) => {
             toast("Added to collection")
+        },
+        removeToast: (state) => {
+            toast.error("Removed from collection")
         }
     }
 });
 
-export const { addCollection, removeCollection, clearCollection, addedToast} = collectionSlice.actions;
+export const { addCollection, removeCollection,removeToast, clearCollection, addedToast} = collectionSlice.actions;
 export default collectionSlice.reducer;

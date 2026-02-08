@@ -5,10 +5,9 @@ const ResultCard = ({data}) => {
 
   const dispatch = useDispatch();
 
-
   const addToCollection = (item) => {
     dispatch(addCollection(item));
-    dispatch(addedToast)
+    dispatch(addedToast());
   }
 
 
