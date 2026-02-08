@@ -16,9 +16,17 @@ const Tabs = () => {
     <div className="flex gap-3 mt-2">
         {
             tabs.map((elem, idx) => {
+                const isActive = activeTab === elem;
                 return (
-                    <button key={idx} onClick={() => onButtonHandler(elem)}
-                        className={`${(activeTab===elem? 'bg-blue-800' :'bg-amber-600')} transition rounded cursor-pointer active:scale-95 border px-2 border-yellow-500 bg-emerald-900 `}>
+                    <button 
+                        key={idx} 
+                        onClick={() => onButtonHandler(elem)}
+                        className={`${
+                            isActive 
+                                ? 'bg-blue-600 text-white font-semibold' 
+                                : 'bg-gray-600 text-gray-200'
+                        } px-4 py-2 rounded transition-all duration-200 cursor-pointer active:scale-95 border border-yellow-500 hover:opacity-90`}
+                    >
                         {elem}
                     </button>
                 )
