@@ -1,28 +1,80 @@
 import { useDispatch, useSelector } from 'react-redux';
-import {fetchPhotos, fetchVideos} from '../api/mediaApi.js';
-import {setQuery, setLoading, setError, setResults} from '../redux/slice-features/searchSlice.js'
+import { fetchPhotos, fetchVideos } from '../api/mediaApi.js';
+import { setLoading, setError, setResults } from '../redux/slice-features/searchSlice.js'
 import { useEffect } from 'react';
 
 
 const ResultGrid = () => {
 
-    const dispatch = useDispatch();
-    const {query, activeTab, results, loading, error} = useSelector((store)=> store.search);
+  const dispatch = useDispatch();
+  const { query, activeTab, results, loading, error } = useSelector((store) => store.search);
 
-    let data;
-    const getData = async() => {
-      if(activeTab === 'Photos'){
-        data = await fetchPhotos(query);
-        console.log(data);
+  const getData = async () => {
+    try {
+      dispatch(setLoading());
+
+      let data = [];
+
+      if (activeTab === 'Photos') {
+        let response = await fetchPhotos(query);
+        data = response.results.map((item) => ({
+          id: item.id,
+          title: item.description,
+          description: item.alt_description,
+          height: item.height,
+          width: item.width,
+          src: item.urls.full,
+          type: 'Photos',
+          thumbnail: item.urls.thumb
+        }));
+        console.log("data", data);
+
       }
-      if(activeTab === 'Videos'){
-        data = await fetchVideos(query);
+      if (activeTab === 'Videos') {
+        let response = await fetchVideos(query);
+        data = response.videos.map((item) => ({
+          id: item.id,
+          thumbnail: item.image,
+          type: 'Videos',
+          height: item.height,
+          width: item.width,
+          title: query,
+          src: item.video_files[1].link
+        }));
+        console.log("data", data);
       }
+
+      dispatch(setResults(data));
+    } catch (error) {
+      console.log("error from getData", error);
+      dispatch(setError(error));
     }
+  }
+
+  console.log(data);
+
+  useEffect(() => {
+    getData();
+  }, [query, activeTab]);
+
+  if(error) return <div className='text-center text-red-500 mt-4'>Error: {error.message}</div>
+  if(loading) return <div className='text-center text-gray-500 mt-4'>Loading...</div>
+  if(results.length === 0) return <div className='text-center text-gray-500 mt-4'>No results found.</div>
+
 
   return (
     <div>
-        <button onClick={getData}>Get data</button>
+      {
+        results.map((elem) => {
+          return(
+            <div>
+              <h3 className='text-lg font-semibold mb-2'>{elem.title}</h3>
+              <img src={elem.src} alt={elem.description} className='w-full h-auto rounded mb-4' />
+              
+            </div>
+          )
+        })
+      }
     </div>
   )
 }
