@@ -11,12 +11,17 @@ const ResultGrid = () => {
   const { query, activeTab, results, loading, error } = useSelector((store) => store.search);
 
   const getData = async () => {
+    if (!query.trim()) {
+      dispatch(setResults([]));
+      return;
+    }
+
     try {
       dispatch(setLoading());
 
       let data = [];
 
-      if (activeTab === 'Photos') {
+      if (activeTab === 'photos') {
         let response = await fetchPhotos(query);
         data = response.results.map((item) => ({
           id: item.id,
@@ -26,12 +31,13 @@ const ResultGrid = () => {
           width: item.width,
           src: item.urls.full,
           type: 'Photos',
-          thumbnail: item.urls.thumb
+          thumbnail: item.urls.thumb,
+          url: item.links.html
         }));
-        console.log("data", data);
+        console.log(response.results);
 
       }
-      if (activeTab === 'Videos') {
+      if (activeTab === 'videos') {
         let response = await fetchVideos(query);
         data = response.videos.map((item) => ({
           id: item.id,
@@ -40,9 +46,10 @@ const ResultGrid = () => {
           height: item.height,
           width: item.width,
           title: query,
-          src: item.video_files[1].link
+          src: item.video_files[1].link,
+          url: item.url
         }));
-        console.log("data", data);
+        console.log(response.videos);
       }
 
       dispatch(setResults(data));
