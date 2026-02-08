@@ -19,9 +19,9 @@ export const SearchBar = () => {
     }
 
   return (
-    <div>
+    <div className="p-4 flex justify-center items-center">
         <form onSubmit={(e) => submitHandler(e)}
-            className="flex bg-gray-900 border w-full border-amber-300 rounded px-16 py-8 gap-2" >
+            className="flex bg-gray-900 border w-[90%] justify-center border-amber-300 rounded px-16 py-8 gap-2" >
             <input className='border-2 w-full px-4 py-2 text-md rounded-l-lg focus:outline-none'
                 required
                 type="text" placeholder="Search here..." 

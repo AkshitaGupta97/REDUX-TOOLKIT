@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { fetchPhotos, fetchVideos } from '../api/mediaApi.js';
 import { setLoading, setError, setResults } from '../redux/slice-features/searchSlice.js'
 import { useEffect } from 'react';
+import ResultCard from './ResultCard.jsx';
 
 
 const ResultGrid = () => {
@@ -47,11 +48,9 @@ const ResultGrid = () => {
       dispatch(setResults(data));
     } catch (error) {
       console.log("error from getData", error);
-      dispatch(setError(error));
+      dispatch(setError(error.message));
     }
   }
-
-  console.log(data);
 
   useEffect(() => {
     getData();
@@ -63,14 +62,12 @@ const ResultGrid = () => {
 
 
   return (
-    <div>
+    <div className='flex flex-wrap gap-4 mt-4 justify-center'>
       {
-        results.map((elem) => {
+        results.map((elem, idx) => {
           return(
-            <div>
-              <h3 className='text-lg font-semibold mb-2'>{elem.title}</h3>
-              <img src={elem.src} alt={elem.description} className='w-full h-auto rounded mb-4' />
-              
+            <div key={idx} >
+             <ResultCard data={elem} />
             </div>
           )
         })

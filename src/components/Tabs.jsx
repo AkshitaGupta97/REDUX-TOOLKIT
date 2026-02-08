@@ -13,7 +13,7 @@ const Tabs = () => {
     const activeTab = useSelector((state) => state.search.activeTab);
 
   return (
-    <div className="flex gap-3 mt-2">
+    <div className="flex gap-3 mt-2 items-center justify-center">
         {
             tabs.map((elem, idx) => {
                 const isActive = activeTab === elem;
